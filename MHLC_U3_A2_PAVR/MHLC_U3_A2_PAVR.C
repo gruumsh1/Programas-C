@@ -118,7 +118,7 @@ Articulo solicitarArticulo(){
     const int MAX_INTENTOS = 3;
 
     do {
-        printf("  Precio del articulo: $"):
+        printf("  Precio del articulo: $");
 
         if (scanf("%f", &art.precio) !=1) {
             printf(" Error: Ingrese un Valor númerico válido.\n");
