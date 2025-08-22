@@ -112,3 +112,67 @@ void procesarVenta(){
     mostrarTicket(articulos, totalArticulos, totalCompra);
 }
 
+Articulo solicitarArticulo(){
+    Articulo art;
+    int intentos = 0;
+    const int MAX_INTENTOS = 3;
+
+    do {
+        printf("  Precio del articulo: $"):
+
+        if (scanf("%f", &art.precio) !=1) {
+            printf(" Error: Ingrese un Valor númerico válido.\n");
+            while (getchar() != '\n');
+            intentos++;
+        } else if (art.precio <=0) {
+            printf("  Error: El precio debe ser mayor a cero.\n");
+            intentos++;
+        } else {
+            break;
+        }
+
+        if (intentos >= MAX_INTENTOS) {
+            printf("  Demasiados intentos fallidos. Cancelando artículo.\n");
+            art.precio = 0;
+            art.cantidad = 0;
+            art.subtotal = 0;
+            return art;
+        }
+        
+    } while (1);
+
+    intentos = 0;
+
+
+    do {
+        printf("  Cantidad:  ");
+
+        if(scanf("%d", &art.cantidad) !=1) {
+            printf(" Error: Ingrese un número entero válido.\n");
+            while (getchar() != '\n');
+            intentos++;
+        } else if (art.cantidad <= 0){
+            printf(" Error: La cantidad debe ser mayor a cero.\n");
+            intentos++;
+        } else {
+            break;
+        }
+
+        if (intentos >= MAX_INTENTOS) {
+            printf(" Demasiados intentos fallidos. Cancelando artículo.\n");
+            art.precio = 0;
+            art.cantidad = 0;
+            art.subtotal = 0;
+            return art;
+        }
+    } while (1);
+
+    art.subtotal = art.precio * art.cantidad;
+    printf("   Subtotal: $%.2f\n", art.subtotal);
+
+    return art;
+
+}
+
+
+
