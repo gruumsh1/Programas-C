@@ -1,0 +1,1 @@
+Desarrollar un sistema que calcule el total de una compra en una tienda de abarrotes, aplicando un descuento del 10\% si el monto supera los \$500. El sistema debe procesar múltiples artículos, validar entradas y generar un ticket detallado.
