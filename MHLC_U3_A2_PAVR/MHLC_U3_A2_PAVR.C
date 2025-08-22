@@ -72,20 +72,22 @@ int menuPrincipal(){
     return opcion;
 }
 
-void procesarVenta(){
+void procesarVenta() {
     Articulo articulos[MAX_ARTICULOS];
     int totalArticulos = 0;
     float totalCompra = 0.0;
     char continuar;
 
-    printf("\n--- NUEVA VENTA ---\n");
-    printf("Ingrese los artículos uno por uno:\n\n");
+    // Inicializa todos los elementos del arreglo
+    for (int i = 0; i < MAX_ARTICULOS; i++) {
+        articulos[i].precio = 0.0;
+        articulos[i].cantidad = 0;
+        articulos[i].subtotal = 0.0;
+    }
 
+    printf("\n--- NUEVA VENTA ---\n");
     do {
-        if (totalArticulos >= MAX_ARTICULOS) {
-            printf("¡ Límite máximo de artículos alcanzado!\n");
-            break;
-        }
+        if (totalArticulos >= MAX_ARTICULOS) break;
 
         printf("Artículo #%d:\n", totalArticulos + 1);
         articulos[totalArticulos] = solicitarArticulo();
@@ -96,35 +98,35 @@ void procesarVenta(){
             printf("\n¿Desea agregar otro artículo? (S/N): ");
             scanf(" %c", &continuar);
             continuar = toupper(continuar);
-
-            while (continuar != 'S' && continuar != 'N'){
+            while (continuar != 'S' && continuar != 'N') {
                 printf("Por favor, ingrese 'S' para Sí o 'N' para No: ");
-                scanf("%c", &continuar);
+                scanf(" %c", &continuar);
                 continuar = toupper(continuar);
             }
-
             while (getchar() != '\n');
-            
         }
-
     } while (continuar == 'S' && totalArticulos < MAX_ARTICULOS);
 
     mostrarTicket(articulos, totalArticulos, totalCompra);
 }
 
-Articulo solicitarArticulo(){
+Articulo solicitarArticulo() {
     Articulo art;
     int intentos = 0;
     const int MAX_INTENTOS = 3;
 
-    do {
-        printf("  Precio del articulo: $");
+    // Inicializa el artículo
+    art.precio = 0.0;
+    art.cantidad = 0;
+    art.subtotal = 0.0;
 
-        if (scanf("%f", &art.precio) !=1) {
-            printf(" Error: Ingrese un Valor númerico válido.\n");
+    do {
+        printf("  Precio del artículo: $");
+        if (scanf("%f", &art.precio) != 1) {
+            printf("  Error: Ingrese un valor numérico válido.\n");
             while (getchar() != '\n');
             intentos++;
-        } else if (art.precio <=0) {
+        } else if (art.precio <= 0) {
             printf("  Error: El precio debe ser mayor a cero.\n");
             intentos++;
         } else {
@@ -132,96 +134,71 @@ Articulo solicitarArticulo(){
         }
 
         if (intentos >= MAX_INTENTOS) {
-            printf("  Demasiados intentos fallidos. Cancelando artículo.\n");
-            art.precio = 0;
-            art.cantidad = 0;
-            art.subtotal = 0;
             return art;
         }
-        
     } while (1);
 
     intentos = 0;
-
-
     do {
-        printf("  Cantidad:  ");
-
-        if(scanf("%d", &art.cantidad) !=1) {
-            printf(" Error: Ingrese un número entero válido.\n");
+        printf("  Cantidad: ");
+        if (scanf("%d", &art.cantidad) != 1) {
+            printf("  Error: Ingrese un número entero válido.\n");
             while (getchar() != '\n');
             intentos++;
-        } else if (art.cantidad <= 0){
-            printf(" Error: La cantidad debe ser mayor a cero.\n");
+        } else if (art.cantidad <= 0) {
+            printf("  Error: La cantidad debe ser mayor a cero.\n");
             intentos++;
         } else {
             break;
         }
 
         if (intentos >= MAX_INTENTOS) {
-            printf(" Demasiados intentos fallidos. Cancelando artículo.\n");
-            art.precio = 0;
-            art.cantidad = 0;
-            art.subtotal = 0;
             return art;
         }
     } while (1);
 
     art.subtotal = art.precio * art.cantidad;
-    printf("   Subtotal: $%.2f\n", art.subtotal);
-
+    printf("  Subtotal: $%.2f\n", art.subtotal);
     return art;
-
 }
 
-void mostrarTicket(Articulo articulos[], int totalAticulos, float totalCompra) {
+void mostrarTicket(Articulo articulos[], int n, float T) {
     printf("\n=============================================\n");
     printf("               TICKET DE COMPRA\n");
     printf("=============================================\n\n");
-
-
     printf("No.  Precio    Cantidad  Subtotal\n");
     printf("---------------------------------\n");
 
-    for (int i = 0; i < totalAticulos; i++) {
-        printf("%-4d $%-8.2f %-9d $%-8.2f\n"), 
-                i+1,
-                articulos[i].precio,
-                articulos[i].cantidad,
-                articulos[i].subtotal;
+    for (int i = 0; i < n; i++) {
+        printf("%-4d $%-8.2f %-9d $%-8.2f\n", 
+               i + 1, 
+               articulos[i].precio, 
+               articulos[i].cantidad, 
+               articulos[i].subtotal);
     }
 
     printf("---------------------------------\n");
-    printf("SUBTOTAL: $%.2f\n", totalCompra);
+    printf("SUBTOTAL: $%.2f\n", T);
 
-    if (totalCompra> MONTO_MINIMO_DESCUENTO) {
-        float descuento = totalCompra * PORCENTAJE_DESCUENTO;
-        float totalConDescuento = totalCompra - descuento;
-
-        printf("¡DESCUENTO APLICADO (%.0f%%)! - $%.2f\n",
-            PORCENTAJE_DESCUENTO * 100, descuento);
-        printf("TOTAL A PAGAR: $%.2f\n", totalConDescuento);
+    if (T > MONTO_MINIMO_DESCUENTO) {
+        float descuento = T * PORCENTAJE_DESCUENTO;
+        float totalFinal = T - descuento;
+        printf("¡DESCUENTO APLICADO (10%%)! -$%.2f\n", descuento);
+        printf("TOTAL A PAGAR: $%.2f\n", totalFinal);
 
         int totalItems = 0;
-        for (int i = 0; i < totalAticulos; i++) {
-            totalItems += articulos[i].cantidad;
-        }
-
+        for (int i = 0; i < n; i++) totalItems += articulos[i].cantidad;
         printf("Total de items: %d\n", totalItems);
-        printf("Precio promedio por item: $%.2f\n", totalConDescuento / totalItems);
-
+        printf("Precio promedio por item: $%.2f\n", totalFinal / totalItems);
     } else {
-        float faltaParaDescuento = MONTO_MINIMO_DESCUENTO - totalCompra;
-
-        printf("TOTAL A PAGAR: $%.2f\n", totalCompra);
-        printf("Le faltan $%.2f para el descuento del %.0f%%\n", faltaParaDescuento, PORCENTAJE_DESCUENTO * 100);
+        float falta = MONTO_MINIMO_DESCUENTO - T;
+        printf("TOTAL A PAGAR: $%.2f\n", T);
+        printf("Le faltan $%.2f para el descuento del 10%%\n", falta);
 
         int totalItems = 0;
-        for (int i=0; i< totalAticulos; i++){
-            totalItems += articulos[i].cantidad;
-        }
+        for (int i = 0; i < n; i++) totalItems += articulos[i].cantidad;
         printf("Total de items: %d\n", totalItems);
-        printf("Precio promedio por item: $%.2f\n", totalCompra / totalItems);
+        printf("Precio promedio por item: $%.2f\n", T / totalItems);
     }
     printf("=============================================\n\n");
 }
