@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 
-#define MONTO:MINIMO_DESCUENTO 500.0
+#define MONTO_MINIMO_DESCUENTO 500.0
 #define PORCENTAJE_DESCUENTO 0.10
 #define MAX_ARTICULOS 100
 
@@ -174,5 +174,76 @@ Articulo solicitarArticulo(){
 
 }
 
+void mostrarTicket(Articulo articulos[], int totalAticulos, float totalCompra) {
+    printf("\n=============================================\n");
+    printf("               TICKET DE COMPRA\n");
+    printf("=============================================\n\n");
+
+
+    printf("No.  Precio    Cantidad  Subtotal\n");
+    printf("---------------------------------\n");
+
+    for (int i = 0; i < totalAticulos; i++) {
+        printf("%-4d $%-8.2f %-9d $%-8.2f\n"), 
+                i+1,
+                articulos[i].precio,
+                articulos[i].cantidad,
+                articulos[i].subtotal;
+    }
+
+    printf("---------------------------------\n");
+    printf("SUBTOTAL: $%.2f\n", totalCompra);
+
+    if (totalCompra> MONTO_MINIMO_DESCUENTO) {
+        float descuento = totalCompra * PORCENTAJE_DESCUENTO;
+        float totalConDescuento = totalCompra - descuento;
+
+        printf("¡DESCUENTO APLICADO (%.0f%%)! - $%.2f\n",
+            PORCENTAJE_DESCUENTO * 100, descuento);
+        printf("TOTAL A PAGAR: $%.2f\n", totalConDescuento);
+
+        int totalItems = 0;
+        for (int i = 0; i < totalAticulos; i++) {
+            totalItems += articulos[i].cantidad;
+        }
+
+        printf("Total de items: %d\n", totalItems);
+        printf("Precio promedio por item: $%.2f\n", totalConDescuento / totalItems);
+
+    } else {
+        float faltaParaDescuento = MONTO_MINIMO_DESCUENTO - totalCompra;
+
+        printf("TOTAL A PAGAR: $%.2f\n", totalCompra);
+        printf("Le faltan $%.2f para el descuento del %.0f%%\n", faltaParaDescuento, PORCENTAJE_DESCUENTO * 100);
+
+        int totalItems = 0;
+        for (int i=0; i< totalAticulos; i++){
+            totalItems += articulos[i].cantidad;
+        }
+        printf("Total de items: %d\n", totalItems);
+        printf("Precio promedio por item: $%.2f\n", totalCompra / totalItems);
+    }
+    printf("=============================================\n\n");
+}
+
+char solocitarContinuacion(){
+    char opcion;
+
+    printf("\n¿Desea realizar otra venta? (S/N): ");
+    scanf(" %c", &opcion);
+
+    while (getchar() != '\n');
+
+    opcion = toupper(opcion);
+
+    while (opcion != 'S' && opcion != 'N'){
+        printf("Por favor, ingrese 'S' para Sí o 'N' para No: ");
+        scanf(" %c", &opcion);
+        opcion = toupper(opcion);
+        while (getchar() != '\n');
+    }
+
+    return opcion;
+}
 
 
