@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "MHLC_U3_A2_PAVR.C": "cpp"
+        "MHLC_U3_A2_PAVR.C": "cpp",
+        "FIBONACCI.C": "cpp"
     }
 }
