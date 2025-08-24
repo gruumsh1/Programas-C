@@ -1,57 +1,37 @@
 /*MHLC_U3_EA_PAVR Este programa calcula las sucesiones de Fibonacci
 para  n numeros */
 
+// Programa 1: Serie de Fibonacci
 #include <stdio.h>
-#include <math.h>
-
-/*
- *  Calcula el n-ésimo número de Fibonacci usando la fórmula de Binet.
- *
- * n La posición en la sucesión de Fibonacci.
- * Regresa El valor del n-ésimo número de Fibonacci (redondeado).
- */
-long long fibonacci_binet(int n) {
-    if (n < 0) {
-        return -1; // Valor de error para entrada negativa
-    }
-    const double sqrt5 = sqrt(5.0);
-    double phi = (1.0 + sqrt5) / 2.0;
-    double psi = (1.0 - sqrt5) / 2.0;
-    
-    // Utilizamos pow para calcular las potencias
-    return round((pow(phi, n) - pow(psi, n)) / sqrt5);
-}
 
 int main() {
-    int n;
-    char continuar;
+    int n, i;
+    // se definen los valores de las primeras iteraciones
+    long long a = 0, b = 1, c;
 
-    do {
-        // Pedimos al usuario que ingrese el número de iteraciones
-        printf("Ingrese la cantidad de iteraciones (n) en la sucesion de Fibonacci: ");
-        scanf("%d", &n);
+    // Pedir al usuario el número de términos
+    printf("Ingrese el número de términos de Fibonacci a mostrar: ");
+    scanf("%d", &n);
 
-        // Validamos la entrada
-        if (n < 0) {
-            printf("Error: La posicion debe ser un numero no negativo.\n");
-        } else {
-            // Iteramos para imprimir cada término hasta n
-            for (int i = 0; i <= n; i++) {
-                long long resultado = fibonacci_binet(i);
-                printf("F(%d) = %lld\n", i, resultado);
-            }
-        }
-        
-        // Limpiamos el buffer de entrada para evitar problemas con la lectura del caracter
-        while (getchar() != '\n');
+    // Validar entrada para comprobar que no se ingrese algun número negativo
+    if (n <= 0) {
+        printf("Por favor, ingrese un número mayor que 0.\n");
+        return 1;
+    }
 
-        // Preguntamos si el usuario desea continuar
-        printf("\n¿Desea continuar con otro numero? (s/n): ");
-        scanf(" %c", &continuar);
+    // Mostrar los primeros términos según n
+    printf("Serie de Fibonacci (%d términos):\n", n);
+    if (n >= 1) printf("%lld\n ", a);
+    if (n >= 2) printf("%lld\n ", b);
 
-    } while (continuar == 's' || continuar == 'S');
+    // Generar y mostrar los siguientes términos se agrega \n para que impriman en forma tabular
+    for (i = 3; i <= n; i++) {
+        c = a + b;
+        printf("%lld\n ", c);
+        a = b;
+        b = c;
+    }
 
-    printf("Fin del programa.\n");
-
+    printf("\n");
     return 0;
 }
