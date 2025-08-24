@@ -1,14 +1,14 @@
-/*Este programa calcula las sucesiones de Fibonacci
+/*MHLC_U3_EA_PAVR Este programa calcula las sucesiones de Fibonacci
 para  n numeros */
 
 #include <stdio.h>
 #include <math.h>
 
 /*
- * @brief Calcula el n-ésimo número de Fibonacci usando la fórmula de Binet.
+ *  Calcula el n-ésimo número de Fibonacci usando la fórmula de Binet.
  *
- * @param n La posición en la sucesión de Fibonacci.
- * @return El valor del n-ésimo número de Fibonacci (redondeado).
+ * n La posición en la sucesión de Fibonacci.
+ * Regresa El valor del n-ésimo número de Fibonacci (redondeado).
  */
 long long fibonacci_binet(int n) {
     if (n < 0) {
@@ -27,8 +27,8 @@ int main() {
     char continuar;
 
     do {
-        // Pedimos al usuario que ingrese la posición deseada
-        printf("Ingrese la posicion (n) en la sucesion de Fibonacci: ");
+        // Pedimos al usuario que ingrese el número de iteraciones
+        printf("Ingrese la cantidad de iteraciones (n) en la sucesion de Fibonacci: ");
         scanf("%d", &n);
 
         // Validamos la entrada
